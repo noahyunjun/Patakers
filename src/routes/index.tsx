@@ -1,42 +1,18 @@
-"use client";
-
-import { useState } from "react";
-import {
-  useQuery,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { useState, type FormEvent } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import ky from "ky";
+import { getHistory, type HistoryItem } from "~/lib/history";
+import { sendContact } from "~/lib/contact.server";
 
-type HistoryItem = {
-  year: number;
-  title: string;
-  description: string;
-};
-
-async function fetchHistory() {
-  // 향후 API로 교체 가능. 현재는 정적 데이터 반환
-  return [
-    {
-      year: 2018,
-      title: "팀 결성",
-      description: "찬양과 예배를 위한 첫 모임.",
-    },
-    { year: 2019, title: "첫 사역", description: "지역 교회 연합 예배 섬김." },
-    { year: 2021, title: "정규 예배", description: "월간 찬양집회 정례화." },
-    {
-      year: 2023,
-      title: "앨범 발매",
-      description: "첫 싱글 발매 및 스트리밍 공개.",
-    },
-  ] as HistoryItem[];
-}
+export const Route = createFileRoute("/")({
+  loader: () => ({ history: getHistory() }),
+  component: Home,
+});
 
 const columnHelper = createColumnHelper<HistoryItem>();
 
@@ -55,11 +31,8 @@ const columns = [
   }),
 ];
 
-function Content() {
-  const { data: history = [] } = useQuery({
-    queryKey: ["history"],
-    queryFn: fetchHistory,
-  });
+function Home() {
+  const { history } = Route.useLoaderData();
 
   const table = useReactTable({
     data: history,
@@ -72,22 +45,19 @@ function Content() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resultMessage, setResultMessage] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
     setResultMessage(null);
+
     try {
-      const res = await ky.post("/api/send", {
-        json: { name, email },
-        throwHttpErrors: false,
-      });
-      const data = (await res.json()) as { ok: boolean; message?: string };
-      if (res.ok && data.ok) {
+      const result = await sendContact({ data: { name, email } });
+      if (result.ok) {
         setResultMessage("감사합니다! 메일이 전송되었습니다.");
         setName("");
         setEmail("");
       } else {
-        setResultMessage(data.message ?? "전송에 실패했습니다.");
+        setResultMessage(result.message);
       }
     } catch {
       setResultMessage("전송 중 오류가 발생했습니다.");
@@ -118,7 +88,7 @@ function Content() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </th>
                   ))}
@@ -130,10 +100,7 @@ function Content() {
                 <tr key={row.id} className="border-t">
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="px-4 py-3 text-sm">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
                 </tr>
@@ -188,16 +155,5 @@ function Content() {
         ) : null}
       </section>
     </div>
-  );
-}
-
-// QueryClient는 컴포넌트 외부에서 생성 (재생성 방지)
-const queryClient = new QueryClient();
-
-export default function Home() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Content />
-    </QueryClientProvider>
   );
 }
