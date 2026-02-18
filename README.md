@@ -1,6 +1,7 @@
 # Patakers
 
-TanStack Start 기반의 찬양팀 히스토리/문의 수집 랜딩 페이지입니다.
+TanStack Start 기반 찬양팀 히스토리/문의 수집 랜딩 페이지입니다.  
+배포 타겟은 Netlify 기준으로 구성되어 있습니다.
 
 ## 기술 스택
 
@@ -13,18 +14,18 @@ TanStack Start 기반의 찬양팀 히스토리/문의 수집 랜딩 페이지�
 - Package Manager: pnpm
 - Deploy: Netlify
 
-## 실행 방법
+## 빠른 시작
 
 1. 의존성 설치
 
 ```bash
 corepack prepare pnpm@10.17.1 --activate
-pnpm install
+corepack pnpm install
 ```
 
-2. 환경 변수 설정 (`.env` 또는 Netlify 환경변수)
+2. 로컬 환경변수 파일 생성 (`.env`)
 
-```bash
+```env
 RESEND_API_KEY=your_resend_api_key_here
 CONTACT_RECEIVER_EMAIL=your_email@example.com
 ```
@@ -32,26 +33,51 @@ CONTACT_RECEIVER_EMAIL=your_email@example.com
 3. 개발 서버 실행
 
 ```bash
-pnpm dev
+corepack pnpm dev
+```
+
+4. 빌드 확인
+
+```bash
+corepack pnpm build
+```
+
+## 프로젝트 구조
+
+```text
+src/
+  routes/
+    __root.tsx          # 루트 문서/메타
+    index.tsx           # 랜딩 UI + 폼
+  lib/
+    history.ts          # 히스토리 데이터
+    contact.server.ts   # Resend 서버 함수
+  styles/
+    globals.css         # 전역 스타일
+  router.tsx            # TanStack Router 설정
 ```
 
 ## 스크립트
 
 ```bash
-pnpm dev
-pnpm build
-pnpm preview
-pnpm start
-pnpm lint
+corepack pnpm dev
+corepack pnpm build
+corepack pnpm preview
+corepack pnpm start
+corepack pnpm lint
 ```
 
-## 배포 (Netlify)
+## Netlify 기준 배포 설정
 
-- `netlify.toml` 기준 빌드 설정
+이 프로젝트는 `/Users/mac/Desktop/User/Patakers/patakers/netlify.toml` 기준으로 빌드됩니다.
+
 - Build command: `vite build`
 - Publish directory: `dist/client`
-- Netlify 환경변수:
-  - `RESEND_API_KEY`
-  - `CONTACT_RECEIVER_EMAIL`
+- Functions output: Netlify Vite plugin이 자동 생성
 
-자세한 절차는 `DEPLOYMENT.md`를 참고하세요.
+필수 환경변수(넷리파이 UI에서 설정):
+
+- `RESEND_API_KEY`
+- `CONTACT_RECEIVER_EMAIL`
+
+배포 상세 절차는 `/Users/mac/Desktop/User/Patakers/patakers/DEPLOYMENT.md`를 참고하세요.
