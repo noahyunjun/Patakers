@@ -5,6 +5,7 @@ export function getRouter() {
   const router = createRouter({
     routeTree,
     defaultPreload: "intent",
+    defaultNotFoundComponent: () => <p>Not Found</p>,
     scrollRestoration: true,
   });
 
