@@ -6,7 +6,7 @@ test("home renders main sections and contact form", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "함께 예배하고",
   );
-  await expect(page.getByRole("heading", { name: "우리의 예배 히스토리" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "최근 예배의 흐름" })).toBeVisible();
   await expect(page.getByLabel("이름")).toBeVisible();
   await expect(page.getByLabel("이메일")).toBeVisible();
   await expect(page.getByLabel("메시지")).toBeVisible();
