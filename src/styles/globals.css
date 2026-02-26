@@ -68,9 +68,9 @@ p {
 .landing-shell {
   width: min(1100px, calc(100% - 2.4rem));
   margin: 0 auto;
-  padding: 2.2rem 0 5.6rem;
+  padding: 2.4rem 0 6.4rem;
   display: grid;
-  gap: 4rem;
+  gap: 5rem;
 }
 
 .hero {
@@ -139,9 +139,56 @@ p {
 
 .hero-copy {
   margin-top: 1.4rem;
-  width: min(60ch, 100%);
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  width: min(53ch, 100%);
+  font-size: clamp(1.06rem, 1.5vw, 1.2rem);
   color: rgb(244 238 220 / 84%);
+}
+
+.hero-kicker {
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(244 238 220 / 56%);
+}
+
+.hero-title {
+  margin-top: 0.65rem;
+}
+
+.hero-subline {
+  margin-top: 0.5rem;
+  width: min(46ch, 100%);
+  font-size: 0.96rem;
+  color: rgb(244 238 220 / 66%);
+}
+
+.hero-metrics {
+  margin-top: 1.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.metric {
+  border: 1px solid rgb(244 238 220 / 24%);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 4%);
+  padding: 0.7rem 0.8rem;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.metric strong {
+  font-size: 0.86rem;
+  letter-spacing: 0.04em;
+}
+
+.metric span {
+  font-size: 0.74rem;
+  color: rgb(244 238 220 / 70%);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
 
 .hero-actions {
@@ -152,10 +199,10 @@ p {
 }
 
 .section-block {
-  border-radius: 20px;
-  padding: clamp(1.2rem, 2.6vw, 1.8rem);
+  border-radius: 22px;
+  padding: clamp(1.4rem, 3vw, 2rem);
   border: 1px solid rgb(19 32 28 / 10%);
-  background: rgb(255 255 255 / 52%);
+  background: rgb(255 255 255 / 58%);
   backdrop-filter: blur(1px);
 }
 
@@ -166,8 +213,30 @@ p {
 }
 
 .section-head h2 {
-  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4.2vw, 3.3rem);
   line-height: 0.98;
+}
+
+.section-statement {
+  margin-bottom: 1.2rem;
+  width: min(62ch, 100%);
+  font-size: clamp(1.02rem, 1.4vw, 1.16rem);
+}
+
+.spotlight-block {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-block::before {
+  content: "";
+  position: absolute;
+  inset: -45% auto auto -18%;
+  width: 65%;
+  aspect-ratio: 1/1;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgb(212 106 77 / 10%), transparent 65%);
+  pointer-events: none;
 }
 
 .eyebrow {
@@ -434,13 +503,17 @@ p {
 @media (max-width: 700px) {
   .landing-shell {
     width: min(1100px, calc(100% - 1.2rem));
-    gap: 2.8rem;
+    gap: 3rem;
   }
 
   .hero {
     min-height: 72vh;
     border-radius: 18px;
     padding-top: 2.6rem;
+  }
+
+  .hero-metrics {
+    grid-template-columns: 1fr;
   }
 
   .section-block {

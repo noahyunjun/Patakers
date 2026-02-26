@@ -7,19 +7,16 @@ import ShinyText from "~/components/reactbits/ShinyText";
 
 const worshipReasons = [
   {
-    title: "말씀에 순종하는 예배",
-    description:
-      "찬양은 감정의 표현을 넘어 말씀에 대한 순종입니다. 우리는 찬양을 통해 하나님이 누구신지 다시 고백합니다.",
+    title: "말씀 중심",
+    description: "하나님의 성품을 기준으로 예배를 준비합니다.",
   },
   {
-    title: "공동체를 살리는 예배",
-    description:
-      "함께 부르는 한 곡이 서로의 믿음을 붙듭니다. 같은 고백을 반복할 때 공동체는 더 단단해집니다.",
+    title: "공동체 중심",
+    description: "함께 부르는 고백으로 서로의 믿음을 붙듭니다.",
   },
   {
-    title: "감사를 배우는 예배",
-    description:
-      "찬양은 상황의 결론이 아니라 믿음의 시작입니다. 감사는 사역의 중심 태도이며 우리의 일상으로 이어집니다.",
+    title: "지속 가능한 기록",
+    description: "예배와 메시지를 남겨 다음 세대와 공유합니다.",
   },
 ];
 
@@ -27,9 +24,6 @@ const feedCards = [
   { label: "Open Worship", title: "Beloved", color: "tone-wine" },
   { label: "Card News", title: "Partakers Card News", color: "tone-paper" },
   { label: "Monthly Worship", title: "공동체의 향기", color: "tone-sky" },
-  { label: "Rebuilding", title: "만들어지는 아름다운 공동체", color: "tone-stone" },
-  { label: "Discipleship", title: "가르치고 지키는 제자", color: "tone-cloud" },
-  { label: "Identity", title: "Partakers Ministry", color: "tone-moss" },
 ];
 
 export const Route = createFileRoute("/")({
@@ -137,30 +131,46 @@ function Home() {
             Partakers
           </ShinyText>
         </div>
-        <h1>
-          함께 예배하고
-          <br />
-          함께 자라갑니다
-        </h1>
+        <p className="hero-kicker">ONE TEAM. ONE WORSHIP.</p>
+        <h1 className="hero-title">함께 예배하고, 함께 자랍니다.</h1>
         <p className="hero-copy">
-          우리는 말씀 중심의 청년 예배팀입니다. 매달의 예배와 기록을 통해
-          하나님을 알아가고, 감사의 언어를 공동체 안에 남깁니다.
+          말씀 중심의 청년 예배팀이 매달 예배와 기록으로 공동체를 세웁니다.
         </p>
+        <p className="hero-subline">
+          한 번의 모임이 끝나도, 고백은 계속 남아 다음 예배를 준비합니다.
+        </p>
+        <div className="hero-metrics" aria-label="Partakers 핵심 지표">
+          <div className="metric">
+            <strong>Monthly</strong>
+            <span>Open Worship</span>
+          </div>
+          <div className="metric">
+            <strong>Word-Driven</strong>
+            <span>Message First</span>
+          </div>
+          <div className="metric">
+            <strong>Community</strong>
+            <span>Grow Together</span>
+          </div>
+        </div>
         <div className="hero-actions">
           <a href="#worship" className="btn btn-primary">
-            예배 이야기 보기
+            예배 흐름 보기
           </a>
           <a href="#join" className="btn btn-secondary">
-            팀과 함께하기
+            지금 함께하기
           </a>
         </div>
       </section>
 
-      <section className="js-reveal section-block" id="why">
+      <section className="js-reveal section-block spotlight-block" id="why">
         <div className="section-head">
           <p className="eyebrow">WHY WE WORSHIP</p>
-          <h2>하나님을 찬양하는 이유</h2>
+          <h2>우리는 예배를 사역의 중심에 둡니다</h2>
         </div>
+        <p className="section-statement">
+          감정보다 기준을 먼저 세우고, 한 곡의 고백이 공동체를 세우도록 만듭니다.
+        </p>
         <div className="reason-grid">
           {worshipReasons.map((reason, index) => (
             <article key={reason.title} className="reason-card" style={{ transitionDelay: `${index * 90}ms` }}>
@@ -174,10 +184,10 @@ function Home() {
       <section className="js-reveal section-block" id="worship">
         <div className="section-head">
           <p className="eyebrow">WORSHIP HISTORY</p>
-          <h2>우리의 예배 히스토리</h2>
+          <h2>최근 예배의 흐름</h2>
         </div>
         <article className="next-event">
-          <p className="next-label">다음 모임</p>
+          <p className="next-label">Next Gathering</p>
           <h3>Open Worship · BELOVED</h3>
           <p>2026.02.21 (토) 6:00 PM · 예능교회 비전홀</p>
           <small>1 John 5:3-4 · This is love for God: to obey his commands.</small>
@@ -196,7 +206,7 @@ function Home() {
       <section className="js-reveal section-block" id="archive">
         <div className="section-head">
           <p className="eyebrow">MESSAGE ARCHIVE</p>
-          <h2>예배와 카드뉴스 기록</h2>
+          <h2>남겨진 기록이 다음 예배를 만듭니다</h2>
         </div>
         <div className="feed-grid">
           {feedCards.map((card, index) => (
@@ -211,11 +221,11 @@ function Home() {
       <section className="js-reveal section-block join-block" id="join">
         <div className="section-head">
           <p className="eyebrow">JOIN US</p>
-          <h2>우리 팀과 함께해 주세요</h2>
+          <h2>한 번의 문의가 다음 예배를 시작합니다</h2>
         </div>
         <p className="join-copy">
-          사역 초청, 연합예배, 팀 참여 문의를 기다립니다. 함께 찬양하고 함께
-          세워지는 공동체를 만들고 싶다면 지금 메시지를 남겨 주세요.
+          사역 초청, 연합예배, 팀 참여 문의를 기다립니다. 함께 세워질 준비가
+          되었다면 지금 메시지를 남겨 주세요.
         </p>
 
         <form onSubmit={handleSubmit} className="contact-form">
