@@ -1,24 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
 import { Resend } from "resend";
+import { validateContactInput } from "~/lib/contact-schema";
+import { captureServerError } from "~/lib/monitoring";
 
-export type ContactInput = {
-  name: string;
-  email: string;
-};
-
-export type ContactResult =
-  | { ok: true }
-  | { ok: false; message: string };
+export type ContactResult = { ok: true } | { ok: false; message: string };
 
 export const sendContact = createServerFn({ method: "POST" })
-  .inputValidator((data: ContactInput) => data)
-  .handler(async ({ data }: { data: ContactInput }): Promise<ContactResult> => {
-    const name = data?.name?.trim();
-    const email = data?.email?.trim();
-
-    if (!name || !email) {
-      return { ok: false, message: "이름과 이메일은 필수입니다." };
+  .inputValidator((data: unknown) => data)
+  .handler(async ({ data }: { data: unknown }): Promise<ContactResult> => {
+    const parsed = validateContactInput(data);
+    if (!parsed.ok) {
+      return { ok: false, message: parsed.message };
     }
+
+    const { name, email, message } = parsed.data;
 
     const to = process.env.CONTACT_RECEIVER_EMAIL;
     const apiKey = process.env.RESEND_API_KEY;
@@ -42,13 +37,17 @@ export const sendContact = createServerFn({ method: "POST" })
       await resend.emails.send({
         from: "Patakers <onboarding@resend.dev>",
         to,
-        subject: "새 랜딩 문의 도착",
+        subject: "[Partakers] 함께하기 문의 도착",
         replyTo: email,
-        text: `이름: ${name}\n이메일: ${email}`,
+        text: `이름: ${name}\n이메일: ${email}\n메시지: ${message || "(없음)"}`,
       });
 
       return { ok: true };
-    } catch {
+    } catch (error) {
+      captureServerError(error, {
+        feature: "contact-email",
+        email,
+      });
       return { ok: false, message: "메일 전송 실패" };
     }
   });

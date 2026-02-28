@@ -10,7 +10,11 @@ TanStack Start 기반 찬양팀 히스토리/문의 수집 랜딩 페이지입�
 - Language: TypeScript
 - Styling: Tailwind CSS v4
 - Table UI: TanStack React Table
+- Validation: Valibot (client + server shared schema)
 - Email: Resend
+- Error Tracking: Sentry (client/server)
+- E2E Test: Playwright
+- Motion/UI Library Source: ReactBits (via installer)
 - Package Manager: pnpm
 - Deploy: Netlify
 
@@ -28,6 +32,8 @@ corepack pnpm install
 ```env
 RESEND_API_KEY=your_resend_api_key_here
 CONTACT_RECEIVER_EMAIL=your_email@example.com
+SENTRY_DSN=your_server_sentry_dsn_optional
+VITE_SENTRY_DSN=your_client_sentry_dsn_optional
 ```
 
 3. 개발 서버 실행
@@ -51,7 +57,10 @@ src/
     index.tsx           # 랜딩 UI + 폼
   lib/
     history.ts          # 히스토리 데이터
-    contact.server.ts   # Resend 서버 함수
+    contact.ts          # Resend 서버 함수
+    contact-schema.ts   # Valibot 입력 검증 스키마
+    monitoring.client.ts # 브라우저 Sentry 초기화
+    monitoring.ts        # 서버 Sentry 에러 캡처
   styles/
     globals.css         # 전역 스타일
   router.tsx            # TanStack Router 설정
@@ -65,7 +74,20 @@ corepack pnpm build
 corepack pnpm preview
 corepack pnpm start
 corepack pnpm lint
+corepack pnpm test:e2e:install
+corepack pnpm test:e2e
+corepack pnpm reactbits:list
+corepack pnpm reactbits:check
+corepack pnpm reactbits:install
 ```
+
+## ReactBits 사용 방식
+
+`reactbits.dev`는 일반적인 npm UI 라이브러리 import 방식이 아니라, 컴포넌트를 프로젝트로 복사하는 방식입니다.
+
+- 설치 확인: `corepack pnpm reactbits:check`
+- 컴포넌트 동기화: `corepack pnpm reactbits:install`
+- 출력 경로: `src/components/reactbits`
 
 ## Netlify 기준 배포 설정
 
@@ -79,5 +101,10 @@ corepack pnpm lint
 
 - `RESEND_API_KEY`
 - `CONTACT_RECEIVER_EMAIL`
+
+선택 환경변수(에러 트래킹):
+
+- `SENTRY_DSN`
+- `VITE_SENTRY_DSN`
 
 배포 상세 절차는 `/Users/mac/Desktop/User/Patakers/patakers/DEPLOYMENT.md`를 참고하세요.
